@@ -1,0 +1,215 @@
+@import "tailwindcss";
+
+:root {
+  --forest: #1b3327;
+  --forest-night: #0a140e;
+  --forest-deep: #0e2018;
+  --canopy: #2f5943;
+  --clay: #c1502f;
+  --gold: #f4a93c;
+  --paper: #faf3e6;
+  --sand: #e4d3b2;
+}
+
+@theme inline {
+  --color-forest: var(--forest);
+  --color-forest-night: var(--forest-night);
+  --color-forest-deep: var(--forest-deep);
+  --color-canopy: var(--canopy);
+  --color-clay: var(--clay);
+  --color-gold: var(--gold);
+  --color-paper: var(--paper);
+  --color-sand: var(--sand);
+
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-work-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--forest);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--forest-night);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Hero sunrise (Effect 1) ---------- */
+
+.hero-sky-night {
+  background: radial-gradient(
+    130% 95% at 30% -10%,
+    #17311f 0%,
+    var(--forest-night) 55%,
+    #05100a 100%
+  );
+}
+
+.hero-sky-day {
+  background: radial-gradient(
+    120% 90% at 42% 15%,
+    #fce3b0 0%,
+    rgba(193, 80, 47, 0.35) 38%,
+    var(--forest) 78%
+  );
+  opacity: var(--p, 0);
+}
+
+.hero-sun-glow {
+  position: absolute;
+  left: 32%;
+  bottom: 6%;
+  width: min(65vw, 560px);
+  height: min(65vw, 560px);
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(244, 169, 60, 0.85) 0%,
+    rgba(244, 169, 60, 0.3) 38%,
+    transparent 70%
+  );
+  transform: translateY(calc(32% - var(--p, 0) * 32%))
+    scale(calc(0.82 + var(--p, 0) * 0.28));
+  opacity: calc(0.12 + var(--p, 0) * 0.88);
+  filter: blur(calc(28px - var(--p, 0) * 8px));
+  will-change: transform, opacity, filter;
+  pointer-events: none;
+}
+
+.hero-sun {
+  position: absolute;
+  left: 40%;
+  bottom: 9%;
+  width: min(20vw, 170px);
+  height: min(20vw, 170px);
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 30%, #fff3d6, var(--gold) 55%, #d9812f 100%);
+  transform: translateY(calc(48% - var(--p, 0) * 48%));
+  opacity: calc(0.15 + var(--p, 0) * 0.85);
+  box-shadow: 0 0 calc(20px + var(--p, 0) * 70px) rgba(244, 169, 60, calc(0.25 + var(--p, 0) * 0.55));
+  will-change: transform, opacity, box-shadow;
+  pointer-events: none;
+}
+
+.hero-panel {
+  position: absolute;
+  right: -6%;
+  bottom: 0;
+  width: min(72vw, 640px);
+  height: 68%;
+  filter: brightness(calc(0.42 + var(--p, 0) * 0.68)) saturate(calc(0.55 + var(--p, 0) * 0.55))
+    contrast(calc(0.94 + var(--p, 0) * 0.12));
+  will-change: filter;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .hero-sun-glow {
+    left: 50%;
+    bottom: auto;
+    top: 6%;
+    transform: translate(-50%, calc(-18% + var(--p, 0) * 18%))
+      scale(calc(0.82 + var(--p, 0) * 0.28));
+  }
+  .hero-sun {
+    left: 50%;
+    bottom: auto;
+    top: 9%;
+    transform: translate(-50%, calc(-30% + var(--p, 0) * 30%));
+  }
+  .hero-panel {
+    right: -18%;
+    bottom: -2%;
+    width: 92vw;
+    height: 46%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-sky-day,
+  .hero-sun-glow,
+  .hero-sun,
+  .hero-panel {
+    transition: none !important;
+  }
+}
+
+/* ---------- Range input (savings simulator) ---------- */
+
+.range-gold {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--clay), var(--gold));
+  outline: none;
+}
+
+.range-gold::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: var(--paper);
+  border: 3px solid var(--gold);
+  cursor: pointer;
+  transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.range-gold::-webkit-slider-thumb:hover {
+  transform: scale(1.12);
+}
+
+.range-gold::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: var(--paper);
+  border: 3px solid var(--gold);
+  cursor: pointer;
+}
+
+/* ---------- Energy wire (Effect 2) ---------- */
+
+.wire-path {
+  stroke-dashoffset: calc(var(--len, 0) * (1 - var(--wp, 0)));
+  transition: stroke 450ms cubic-bezier(0.16, 1, 0.3, 1), filter 450ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wire-path {
+    stroke-dashoffset: 0 !important;
+  }
+}

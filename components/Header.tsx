@@ -39,7 +39,7 @@ export default function Header() {
 
         <a
           href="#simulador"
-          className="rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-forest-night transition-transform duration-200 hover:scale-[1.03] active:scale-[0.97]"
+          className="hidden shrink-0 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-forest-night transition-transform duration-200 hover:scale-[1.03] active:scale-[0.97] sm:inline-block"
         >
           Simular economia
         </a>

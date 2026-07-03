@@ -6,14 +6,24 @@ import { useEffect, type RefObject } from "react";
  * Writes a scroll-driven progress value (0-1) directly onto a DOM element's
  * inline style as a CSS custom property, bypassing React re-renders.
  * Progress is 0 while `startRef`'s top is at the viewport top edge, and 1
- * once `endRef`'s top reaches it. rAF-throttled and gated by IntersectionObserver
- * so nothing runs while the range is far off-screen.
+ * once `endRef`'s top reaches it.
+ *
+ * Runs a continuous rAF loop while the range is near the viewport (gated by
+ * IntersectionObserver so nothing runs when far off-screen), rather than
+ * reacting to discrete `scroll` events. CSS `scroll-behavior: smooth` (used
+ * for anchor-link navigation) animates scroll position over several frames
+ * without reliably firing a final `scroll` event at rest, which left
+ * event-driven measurements stale — polling every frame sidesteps that.
  */
 export function useScrollVar(
   targetRef: RefObject<HTMLElement | null>,
   startRef: RefObject<HTMLElement | null>,
   endRef: RefObject<HTMLElement | null>,
-  varName = "--p"
+  varName = "--p",
+  /** Fraction of viewport height added to the progress cursor (0 = viewport
+   * top, 1 = viewport bottom). Use >0 so the reveal stays within view instead
+   * of trailing exactly at the top edge, out of sight. */
+  leadFraction = 0
 ) {
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -26,44 +36,48 @@ export function useScrollVar(
       return;
     }
 
-    let ticking = false;
-    let active = true;
+    let frameId = 0;
 
     const measure = () => {
-      ticking = false;
       const start = startRef.current;
       const end = endRef.current;
       if (!start || !end) return;
       const startTop = start.getBoundingClientRect().top;
       const endTop = end.getBoundingClientRect().top;
       const distance = endTop - startTop;
-      const p = distance > 0 ? Math.min(1, Math.max(0, -startTop / distance)) : 0;
+      const cursor = window.innerHeight * leadFraction - startTop;
+      const p = distance > 0 ? Math.min(1, Math.max(0, cursor / distance)) : 0;
       target.style.setProperty(varName, p.toFixed(4));
     };
 
-    const onScroll = () => {
-      if (!active || ticking) return;
-      ticking = true;
-      requestAnimationFrame(measure);
+    const loop = () => {
+      measure();
+      frameId = requestAnimationFrame(loop);
     };
 
     const io = new IntersectionObserver(
       (entries) => {
-        active = entries.some((e) => e.isIntersecting);
-        if (active) onScroll();
+        const active = entries.some((e) => e.isIntersecting);
+        if (active && !frameId) {
+          frameId = requestAnimationFrame(loop);
+        } else if (!active && frameId) {
+          cancelAnimationFrame(frameId);
+          frameId = 0;
+        }
       },
       { rootMargin: "60% 0px 60% 0px" }
     );
-    if (startRef.current) io.observe(startRef.current);
+    // Observe the full target range (not just the start marker) so a tall
+    // range stays "active" for its entire scroll journey — a range taller
+    // than one viewport has its start marker scroll out of view long before
+    // the user finishes scrolling through it.
+    io.observe(target);
 
     measure();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      if (frameId) cancelAnimationFrame(frameId);
       io.disconnect();
     };
-  }, [targetRef, startRef, endRef, varName]);
+  }, [targetRef, startRef, endRef, varName, leadFraction]);
 }

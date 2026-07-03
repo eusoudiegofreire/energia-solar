@@ -25,13 +25,13 @@ export default function Hero() {
       <div className="hero-sky-day absolute inset-0" aria-hidden />
 
       <div className="hero-sun-glow" aria-hidden />
-      <div className="hero-sun" aria-hidden />
 
       <div className="hero-panel" aria-hidden>
         <Image
           src="/assets/sun-panel.png"
           alt=""
           fill
+          sizes="(max-width: 767px) 92vw, 640px"
           className="object-contain object-bottom"
           priority
         />

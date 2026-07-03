@@ -5,8 +5,8 @@ const ROWS = [
 
 export default function SavingsComparison() {
   return (
-    <section id="economia" className="relative z-10 bg-forest py-24 text-paper md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="economia" className="bg-forest py-24 text-paper md:py-32">
+      <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="grid gap-16 md:grid-cols-2 md:items-center">
           <div>
             <p className="font-mono text-xs tracking-[0.2em] text-gold uppercase">

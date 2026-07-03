@@ -11,8 +11,8 @@ export default function FinalCTA() {
   const energize = () => window.dispatchEvent(new Event("wire:energize"));
 
   return (
-    <section id="formulario" className="relative z-10 bg-forest-night py-24 text-paper md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="formulario" className="bg-forest-night py-24 text-paper md:py-32">
+      <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="grid gap-14 md:grid-cols-2 md:items-center">
           <div>
             <p className="font-mono text-xs tracking-[0.2em] text-gold uppercase">

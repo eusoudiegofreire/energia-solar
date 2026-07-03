@@ -14,7 +14,7 @@ export default function EnergyWire() {
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [energized, setEnergized] = useState(false);
 
-  useScrollVar(wrapRef, startRef, endRef, "--wp");
+  useScrollVar(wrapRef, startRef, endRef, "--wp", 0.85);
 
   useEffect(() => {
     const el = wrapRef.current;

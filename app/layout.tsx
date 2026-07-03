@@ -99,7 +99,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${fraunces.variable} ${workSans.variable} ${plexMono.variable}`}
+      className={`${fraunces.variable} ${workSans.variable} ${plexMono.variable} overflow-x-hidden`}
     >
       <head>
         <script

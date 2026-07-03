@@ -78,47 +78,34 @@ body {
 
 .hero-sky-day {
   background: radial-gradient(
-    120% 90% at 42% 15%,
+    85% 75% at 78% 48%,
     #fce3b0 0%,
-    rgba(193, 80, 47, 0.35) 38%,
+    rgba(193, 80, 47, 0.35) 40%,
     var(--forest) 78%
   );
   opacity: var(--p, 0);
 }
 
+/* Ambient bloom anchored on the same box as the panel artwork, so the glow
+   reads as light coming from the sun already illustrated in that image. */
 .hero-sun-glow {
   position: absolute;
-  left: 32%;
-  bottom: 6%;
-  width: min(65vw, 560px);
-  height: min(65vw, 560px);
+  right: -6%;
+  bottom: 0;
+  width: min(72vw, 640px);
+  height: 68%;
   border-radius: 9999px;
   background: radial-gradient(
-    circle,
-    rgba(244, 169, 60, 0.85) 0%,
-    rgba(244, 169, 60, 0.3) 38%,
-    transparent 70%
+    circle at 42% 32%,
+    rgba(255, 227, 168, 0.95) 0%,
+    rgba(244, 169, 60, 0.55) 30%,
+    transparent 65%
   );
-  transform: translateY(calc(32% - var(--p, 0) * 32%))
-    scale(calc(0.82 + var(--p, 0) * 0.28));
-  opacity: calc(0.12 + var(--p, 0) * 0.88);
-  filter: blur(calc(28px - var(--p, 0) * 8px));
+  transform: scale(calc(0.75 + var(--p, 0) * 0.35));
+  opacity: calc(0.06 + var(--p, 0) * 0.94);
+  filter: blur(calc(36px - var(--p, 0) * 10px));
+  mix-blend-mode: screen;
   will-change: transform, opacity, filter;
-  pointer-events: none;
-}
-
-.hero-sun {
-  position: absolute;
-  left: 40%;
-  bottom: 9%;
-  width: min(20vw, 170px);
-  height: min(20vw, 170px);
-  border-radius: 9999px;
-  background: radial-gradient(circle at 35% 30%, #fff3d6, var(--gold) 55%, #d9812f 100%);
-  transform: translateY(calc(48% - var(--p, 0) * 48%));
-  opacity: calc(0.15 + var(--p, 0) * 0.85);
-  box-shadow: 0 0 calc(20px + var(--p, 0) * 70px) rgba(244, 169, 60, calc(0.25 + var(--p, 0) * 0.55));
-  will-change: transform, opacity, box-shadow;
   pointer-events: none;
 }
 
@@ -128,25 +115,26 @@ body {
   bottom: 0;
   width: min(72vw, 640px);
   height: 68%;
-  filter: brightness(calc(0.42 + var(--p, 0) * 0.68)) saturate(calc(0.55 + var(--p, 0) * 0.55))
-    contrast(calc(0.94 + var(--p, 0) * 0.12));
+  filter: brightness(calc(0.34 + var(--p, 0) * 0.86)) saturate(calc(0.4 + var(--p, 0) * 0.85))
+    contrast(calc(0.92 + var(--p, 0) * 0.16));
   will-change: filter;
   pointer-events: none;
 }
 
 @media (max-width: 767px) {
-  .hero-sun-glow {
-    left: 50%;
-    bottom: auto;
-    top: 6%;
-    transform: translate(-50%, calc(-18% + var(--p, 0) * 18%))
-      scale(calc(0.82 + var(--p, 0) * 0.28));
+  .hero-sky-day {
+    background: radial-gradient(
+      100% 60% at 68% 30%,
+      #fce3b0 0%,
+      rgba(193, 80, 47, 0.35) 40%,
+      var(--forest) 78%
+    );
   }
-  .hero-sun {
-    left: 50%;
-    bottom: auto;
-    top: 9%;
-    transform: translate(-50%, calc(-30% + var(--p, 0) * 30%));
+  .hero-sun-glow {
+    right: -18%;
+    bottom: -2%;
+    width: 92vw;
+    height: 46%;
   }
   .hero-panel {
     right: -18%;
